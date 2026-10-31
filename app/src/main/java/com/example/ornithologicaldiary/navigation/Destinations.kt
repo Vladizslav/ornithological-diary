@@ -19,5 +19,20 @@ enum class TopLevelDestination(
 }
 
 object Routes {
-    const val ADD_OBSERVATION = "add_observation"
+
+    const val NEW_ID = -1L
+
+    const val ARG_ID = "id"
+
+    const val OBSERVATION_EDITOR = "observation_editor"
+
+    const val SPECIES_EDITOR = "species_editor"
+
+    const val OBSERVATION_EDITOR_ROUTE = "$OBSERVATION_EDITOR?$ARG_ID={$ARG_ID}"
+
+    const val SPECIES_EDITOR_ROUTE = "$SPECIES_EDITOR?$ARG_ID={$ARG_ID}"
+
+    fun observationEditor(id: Long = NEW_ID): String = "$OBSERVATION_EDITOR?$ARG_ID=$id"
+
+    fun speciesEditor(id: Long = NEW_ID): String = "$SPECIES_EDITOR?$ARG_ID=$id"
 }

@@ -1,5 +1,6 @@
 package com.example.ornithologicaldiary.ui.components
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,7 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 @Composable
 fun AppTopBar(
     title: String,
-    onBack: (() -> Unit)? = null
+    onBack: (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -38,6 +40,7 @@ fun AppTopBar(
                     )
                 }
             }
-        }
+        },
+        actions = actions
     )
 }
