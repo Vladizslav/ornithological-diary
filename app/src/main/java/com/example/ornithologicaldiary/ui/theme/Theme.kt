@@ -31,7 +31,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun OrnithologicalDiaryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Динамическая палитра (Material You) доступна на Android 12 и новее.
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -40,7 +39,6 @@ fun OrnithologicalDiaryTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

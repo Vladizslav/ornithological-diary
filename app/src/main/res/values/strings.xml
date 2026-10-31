@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">Орнитологический дневник</string>
-    <string name="welcome_subtitle">Записывайте встречи с птицами: вид, место, время и заметки к наблюдению.</string>
 </resources>
