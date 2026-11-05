@@ -11,6 +11,7 @@ import com.example.ornithologicaldiary.ui.screens.diary.DiaryScreen
 import com.example.ornithologicaldiary.ui.screens.guide.GuideScreen
 import com.example.ornithologicaldiary.ui.screens.map.MapScreen
 import com.example.ornithologicaldiary.ui.screens.observation.ObservationEditorScreen
+import com.example.ornithologicaldiary.ui.screens.settings.SettingsScreen
 import com.example.ornithologicaldiary.ui.screens.species.SpeciesEditorScreen
 import com.example.ornithologicaldiary.ui.screens.stats.StatsScreen
 
@@ -49,6 +50,9 @@ fun AppNavHost(
         }
         composable(TopLevelDestination.STATS.route) {
             StatsScreen()
+        }
+        composable(TopLevelDestination.SETTINGS.route) {
+            SettingsScreen()
         }
         composable(
             route = Routes.OBSERVATION_EDITOR_ROUTE,

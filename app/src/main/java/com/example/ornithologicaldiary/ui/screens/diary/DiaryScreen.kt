@@ -48,6 +48,7 @@ fun DiaryScreen(
     viewModel: DiaryViewModel = viewModel()
 ) {
     val observations by viewModel.observations.collectAsStateWithLifecycle()
+    val settings by viewModel.settings.collectAsStateWithLifecycle()
     var observationToDelete by remember { mutableStateOf<ObservationWithSpecies?>(null) }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -68,6 +69,7 @@ fun DiaryScreen(
                     items(observations, key = { it.observation.id }) { item ->
                         ObservationCard(
                             item = item,
+                            showNote = settings.showNotes,
                             onClick = { onEditObservation(item.observation.id) },
                             onDelete = { observationToDelete = item }
                         )
@@ -102,6 +104,7 @@ fun DiaryScreen(
 @Composable
 private fun ObservationCard(
     item: ObservationWithSpecies,
+    showNote: Boolean,
     onClick: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -145,7 +148,7 @@ private fun ObservationCard(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                if (item.observation.note.isNotBlank()) {
+                if (showNote && item.observation.note.isNotBlank()) {
                     Text(
                         text = item.observation.note,
                         modifier = Modifier.padding(top = 8.dp),
