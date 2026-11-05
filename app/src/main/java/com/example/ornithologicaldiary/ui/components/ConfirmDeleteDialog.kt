@@ -4,6 +4,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.example.ornithologicaldiary.R
 
 @Composable
 fun ConfirmDeleteDialog(
@@ -18,12 +20,12 @@ fun ConfirmDeleteDialog(
         text = { Text(text = message) },
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text(text = "Удалить")
+                Text(text = stringResource(R.string.common_delete))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Отмена")
+                Text(text = stringResource(R.string.common_cancel))
             }
         }
     )

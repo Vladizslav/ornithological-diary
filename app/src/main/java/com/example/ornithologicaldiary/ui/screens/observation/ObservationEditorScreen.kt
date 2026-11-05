@@ -47,10 +47,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.local.entity.SpeciesEntity
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.util.DateFormat
@@ -69,6 +71,7 @@ fun ObservationEditorScreen(
     var pendingCameraPath by remember { mutableStateOf<String?>(null) }
 
     val context = LocalContext.current
+    val noCameraMessage = stringResource(R.string.observation_no_camera)
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -95,14 +98,16 @@ fun ObservationEditorScreen(
 
     Column(modifier = modifier.fillMaxSize()) {
         AppTopBar(
-            title = if (state.isNew) "Новое наблюдение" else "Наблюдение",
+            title = stringResource(
+                if (state.isNew) R.string.observation_new_title else R.string.observation_edit_title
+            ),
             onBack = onBack,
             actions = {
                 if (!state.isNew) {
                     IconButton(onClick = viewModel::delete) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Удалить"
+                            contentDescription = stringResource(R.string.observation_delete_description)
                         )
                     }
                 }
@@ -124,7 +129,7 @@ fun ObservationEditorScreen(
 
             if (state.speciesOptions.isEmpty()) {
                 Text(
-                    text = "В справочнике нет видов — добавьте их на вкладке «Справочник».",
+                    text = stringResource(R.string.observation_no_species_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -135,7 +140,7 @@ fun ObservationEditorScreen(
                     value = DateFormat.format(state.observedAt),
                     onValueChange = {},
                     modifier = Modifier.weight(1f),
-                    label = { Text(text = "Дата") },
+                    label = { Text(text = stringResource(R.string.observation_date_label)) },
                     readOnly = true,
                     singleLine = true
                 )
@@ -143,7 +148,7 @@ fun ObservationEditorScreen(
                 IconButton(onClick = { showDatePicker = true }) {
                     Icon(
                         imageVector = Icons.Filled.DateRange,
-                        contentDescription = "Выбрать дату"
+                        contentDescription = stringResource(R.string.observation_pick_date)
                     )
                 }
             }
@@ -152,7 +157,7 @@ fun ObservationEditorScreen(
                 value = state.place,
                 onValueChange = viewModel::onPlaceChange,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Место") },
+                label = { Text(text = stringResource(R.string.observation_place_label)) },
                 singleLine = true
             )
 
@@ -160,12 +165,12 @@ fun ObservationEditorScreen(
                 value = state.note,
                 onValueChange = viewModel::onNoteChange,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Заметка") },
+                label = { Text(text = stringResource(R.string.observation_note_label)) },
                 minLines = 3
             )
 
             Text(
-                text = "Фотография",
+                text = stringResource(R.string.observation_photo_label),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -180,17 +185,13 @@ fun ObservationEditorScreen(
                             try {
                                 cameraLauncher.launch(PhotoStorage.contentUri(context, file))
                             } catch (exception: ActivityNotFoundException) {
-                                Toast.makeText(
-                                    context,
-                                    "На устройстве нет приложения камеры",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(context, noCameraMessage, Toast.LENGTH_SHORT).show()
                                 PhotoStorage.delete(file.absolutePath)
                                 pendingCameraPath = null
                             }
                         }
                     ) {
-                        Text(text = "Сделать фото")
+                        Text(text = stringResource(R.string.observation_take_photo))
                     }
                     OutlinedButton(
                         onClick = {
@@ -199,13 +200,13 @@ fun ObservationEditorScreen(
                             )
                         }
                     ) {
-                        Text(text = "Выбрать из галереи")
+                        Text(text = stringResource(R.string.observation_pick_photo))
                     }
                 }
             } else {
                 AsyncImage(
                     model = File(photoPath),
-                    contentDescription = "Фотография наблюдения",
+                    contentDescription = stringResource(R.string.observation_photo_description),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
@@ -213,7 +214,7 @@ fun ObservationEditorScreen(
                     contentScale = ContentScale.Crop
                 )
                 TextButton(onClick = { viewModel.onPhotoChange(null) }) {
-                    Text(text = "Удалить фото")
+                    Text(text = stringResource(R.string.observation_remove_photo))
                 }
             }
 
@@ -222,7 +223,7 @@ fun ObservationEditorScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state.loaded && state.canSave
             ) {
-                Text(text = "Сохранить")
+                Text(text = stringResource(R.string.common_save))
             }
         }
     }
@@ -238,12 +239,12 @@ fun ObservationEditorScreen(
                         showDatePicker = false
                     }
                 ) {
-                    Text(text = "ОК")
+                    Text(text = stringResource(R.string.common_ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text(text = "Отмена")
+                    Text(text = stringResource(R.string.common_cancel))
                 }
             }
         ) {
@@ -260,7 +261,8 @@ private fun SpeciesSelector(
     onSelect: (Long) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedName = options.firstOrNull { it.id == selectedId }?.name ?: "Выберите вид"
+    val selectedName = options.firstOrNull { it.id == selectedId }?.name
+        ?: stringResource(R.string.observation_species_empty)
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -272,7 +274,7 @@ private fun SpeciesSelector(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-            label = { Text(text = "Вид птицы") },
+            label = { Text(text = stringResource(R.string.observation_species_label)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },

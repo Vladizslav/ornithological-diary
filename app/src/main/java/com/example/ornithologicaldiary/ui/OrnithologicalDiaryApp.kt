@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -83,7 +84,7 @@ private fun BottomBar(
                 icon = {
                     Icon(imageVector = destination.icon, contentDescription = null)
                 },
-                label = { Text(text = destination.label) }
+                label = { Text(text = stringResource(destination.labelRes)) }
             )
         }
     }

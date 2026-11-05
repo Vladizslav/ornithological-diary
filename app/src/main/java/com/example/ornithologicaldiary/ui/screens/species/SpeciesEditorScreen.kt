@@ -18,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 
 @Composable
@@ -37,14 +39,16 @@ fun SpeciesEditorScreen(
 
     Column(modifier = modifier.fillMaxSize()) {
         AppTopBar(
-            title = if (state.isNew) "Новый вид" else "Вид птицы",
+            title = stringResource(
+                if (state.isNew) R.string.species_new_title else R.string.species_edit_title
+            ),
             onBack = onBack,
             actions = {
                 if (!state.isNew) {
                     IconButton(onClick = viewModel::delete) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Удалить"
+                            contentDescription = stringResource(R.string.species_delete_description)
                         )
                     }
                 }
@@ -62,16 +66,16 @@ fun SpeciesEditorScreen(
                 value = state.name,
                 onValueChange = viewModel::onNameChange,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Название") },
-                placeholder = { Text(text = "Например, большая синица") },
+                label = { Text(text = stringResource(R.string.species_name_label)) },
+                placeholder = { Text(text = stringResource(R.string.species_name_placeholder)) },
                 singleLine = true
             )
             OutlinedTextField(
                 value = state.latinName,
                 onValueChange = viewModel::onLatinNameChange,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Латинское название") },
-                placeholder = { Text(text = "Parus major") },
+                label = { Text(text = stringResource(R.string.species_latin_label)) },
+                placeholder = { Text(text = stringResource(R.string.species_latin_placeholder)) },
                 singleLine = true
             )
             Button(
@@ -79,7 +83,7 @@ fun SpeciesEditorScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state.loaded && state.canSave
             ) {
-                Text(text = "Сохранить")
+                Text(text = stringResource(R.string.common_save))
             }
         }
     }

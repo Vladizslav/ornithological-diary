@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.local.dao.ObservationDao
 import com.example.ornithologicaldiary.data.local.dao.SpeciesDao
 import com.example.ornithologicaldiary.data.local.entity.ObservationEntity
@@ -31,13 +32,6 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private val defaultSpecies = listOf(
-            "Большая синица" to "Parus major",
-            "Сизый голубь" to "Columba livia",
-            "Обыкновенный скворец" to "Sturnus vulgaris",
-            "Серая ворона" to "Corvus cornix"
-        )
-
         @Volatile
         private var instance: AppDatabase? = null
 
@@ -52,10 +46,12 @@ abstract class AppDatabase : RoomDatabase() {
                 .addCallback(object : Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
-                        defaultSpecies.forEach { (name, latinName) ->
+                        val names = context.resources.getStringArray(R.array.default_species_names)
+                        val latinNames = context.resources.getStringArray(R.array.default_species_latin_names)
+                        names.forEachIndexed { index, name ->
                             db.execSQL(
                                 "INSERT INTO species (name, latinName) VALUES (?, ?)",
-                                arrayOf(name, latinName)
+                                arrayOf(name, latinNames.getOrElse(index) { "" })
                             )
                         }
                     }

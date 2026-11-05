@@ -36,10 +36,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.local.ObservationWithSpecies
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.ui.components.ConfirmDeleteDialog
@@ -60,12 +62,12 @@ fun DiaryScreen(
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            AppTopBar(title = "Дневник")
+            AppTopBar(title = stringResource(R.string.diary_title))
             if (observations.isEmpty()) {
                 EmptyState(
                     icon = Icons.Filled.Today,
-                    title = "Пока нет наблюдений",
-                    description = "Нажмите «Наблюдение», чтобы добавить первую запись."
+                    title = stringResource(R.string.diary_empty_title),
+                    description = stringResource(R.string.diary_empty_description)
                 )
             } else {
                 LazyColumn(
@@ -92,14 +94,14 @@ fun DiaryScreen(
                 .align(Alignment.BottomEnd)
                 .padding(20.dp),
             icon = { Icon(imageVector = Icons.Filled.Add, contentDescription = null) },
-            text = { Text(text = "Наблюдение") }
+            text = { Text(text = stringResource(R.string.diary_add_observation)) }
         )
     }
 
     observationToDelete?.let { item ->
         ConfirmDeleteDialog(
-            title = "Удалить наблюдение?",
-            message = "Запись «${item.speciesName}» будет удалена безвозвратно.",
+            title = stringResource(R.string.diary_delete_title),
+            message = stringResource(R.string.diary_delete_message, item.speciesName),
             onConfirm = {
                 viewModel.delete(item.observation.id)
                 observationToDelete = null
@@ -135,7 +137,7 @@ private fun ObservationCard(
             if (photoPath != null) {
                 AsyncImage(
                     model = File(photoPath),
-                    contentDescription = "Фотография наблюдения",
+                    contentDescription = stringResource(R.string.diary_photo_description),
                     modifier = Modifier
                         .size(56.dp)
                         .clip(RoundedCornerShape(8.dp)),
@@ -180,7 +182,7 @@ private fun ObservationCard(
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.diary_delete_description),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

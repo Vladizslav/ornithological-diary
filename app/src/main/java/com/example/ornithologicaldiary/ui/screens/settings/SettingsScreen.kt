@@ -19,10 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.preferences.SortOrder
 import com.example.ornithologicaldiary.data.preferences.ThemeMode
 import com.example.ornithologicaldiary.ui.components.AppTopBar
@@ -35,7 +37,7 @@ fun SettingsScreen(
     val settings by viewModel.settings.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxSize()) {
-        AppTopBar(title = "Настройки")
+        AppTopBar(title = stringResource(R.string.settings_title))
 
         Column(
             modifier = Modifier
@@ -43,27 +45,27 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            SectionTitle(text = "Тема оформления")
+            SectionTitle(text = stringResource(R.string.settings_section_theme))
             ThemeMode.entries.forEach { mode ->
                 SettingRow(
-                    label = mode.label,
+                    label = stringResource(mode.labelRes),
                     selected = settings.themeMode == mode,
                     onClick = { viewModel.setThemeMode(mode) }
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            SectionTitle(text = "Сортировка наблюдений")
+            SectionTitle(text = stringResource(R.string.settings_section_sort))
             SortOrder.entries.forEach { order ->
                 SettingRow(
-                    label = order.label,
+                    label = stringResource(order.labelRes),
                     selected = settings.sortOrder == order,
                     onClick = { viewModel.setSortOrder(order) }
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            SectionTitle(text = "Отображение")
+            SectionTitle(text = stringResource(R.string.settings_section_display))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -72,11 +74,11 @@ fun SettingsScreen(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Показывать заметки",
+                        text = stringResource(R.string.settings_show_notes_title),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "Заметка отображается в карточке наблюдения",
+                        text = stringResource(R.string.settings_show_notes_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -88,7 +90,7 @@ fun SettingsScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            SectionTitle(text = "Уведомления")
+            SectionTitle(text = stringResource(R.string.settings_section_notifications))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,11 +99,11 @@ fun SettingsScreen(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Ежедневное напоминание",
+                        text = stringResource(R.string.settings_daily_reminder_title),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "Каждый день в 19:00",
+                        text = stringResource(R.string.settings_daily_reminder_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -112,12 +114,12 @@ fun SettingsScreen(
                 )
             }
             TextButton(onClick = viewModel::showNotificationNow) {
-                Text(text = "Показать уведомление сейчас")
+                Text(text = stringResource(R.string.settings_show_notification))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Настройки сохраняются на устройстве и остаются после перезапуска приложения.",
+                text = stringResource(R.string.settings_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

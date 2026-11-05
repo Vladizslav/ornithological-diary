@@ -1,3 +1,121 @@
 <resources>
     <string name="app_name">Орнитологический дневник</string>
+
+    <string name="common_cancel">Отмена</string>
+    <string name="common_delete">Удалить</string>
+    <string name="common_save">Сохранить</string>
+    <string name="common_back">Назад</string>
+    <string name="common_retry">Повторить</string>
+    <string name="common_ok">ОК</string>
+    <string name="common_empty_value">—</string>
+
+    <string name="nav_diary">Дневник</string>
+    <string name="nav_map">Карта</string>
+    <string name="nav_guide">Справочник</string>
+    <string name="nav_stats">Статистика</string>
+    <string name="nav_settings">Настройки</string>
+
+    <string name="diary_title">Дневник</string>
+    <string name="diary_empty_title">Пока нет наблюдений</string>
+    <string name="diary_empty_description">Нажмите «Наблюдение», чтобы добавить первую запись.</string>
+    <string name="diary_add_observation">Наблюдение</string>
+    <string name="diary_delete_title">Удалить наблюдение?</string>
+    <string name="diary_delete_message">Запись «%1$s» будет удалена безвозвратно.</string>
+    <string name="diary_photo_description">Фотография наблюдения</string>
+    <string name="diary_delete_description">Удалить наблюдение</string>
+
+    <string name="guide_title">Справочник</string>
+    <string name="guide_search_placeholder">Поиск по названию</string>
+    <string name="guide_empty_title">Список пуст</string>
+    <string name="guide_empty_description">Добавьте первый вид птицы кнопкой «Вид».</string>
+    <string name="guide_add_species">Вид</string>
+    <string name="guide_delete_title">Удалить вид?</string>
+    <string name="guide_delete_message">«%1$s» и все наблюдения этого вида будут удалены.</string>
+    <string name="guide_online_description">Поиск птиц в интернете</string>
+    <string name="guide_delete_description">Удалить вид</string>
+
+    <string name="map_title">Карта</string>
+    <string name="map_empty_title">Карта наблюдений</string>
+    <string name="map_empty_description">Здесь будут отмечены места встреч с птицами. Экран пока пустой — карта появится на следующем этапе.</string>
+
+    <string name="stats_title">Статистика</string>
+    <string name="stats_species">Видов</string>
+    <string name="stats_observations">Наблюдений</string>
+    <string name="stats_places">Мест</string>
+    <string name="stats_description">Сводка появится, когда в дневнике начнут накапливаться записи. Сейчас это макет экрана.</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_section_theme">Тема оформления</string>
+    <string name="settings_theme_system">Системная</string>
+    <string name="settings_theme_light">Светлая</string>
+    <string name="settings_theme_dark">Тёмная</string>
+    <string name="settings_section_sort">Сортировка наблюдений</string>
+    <string name="settings_sort_new_first">Сначала новые</string>
+    <string name="settings_sort_by_species">По названию вида</string>
+    <string name="settings_section_display">Отображение</string>
+    <string name="settings_show_notes_title">Показывать заметки</string>
+    <string name="settings_show_notes_description">Заметка отображается в карточке наблюдения</string>
+    <string name="settings_section_notifications">Уведомления</string>
+    <string name="settings_daily_reminder_title">Ежедневное напоминание</string>
+    <string name="settings_daily_reminder_description">Каждый день в 19:00</string>
+    <string name="settings_show_notification">Показать уведомление сейчас</string>
+    <string name="settings_hint">Настройки сохраняются на устройстве и остаются после перезапуска приложения.</string>
+
+    <string name="observation_new_title">Новое наблюдение</string>
+    <string name="observation_edit_title">Наблюдение</string>
+    <string name="observation_species_label">Вид птицы</string>
+    <string name="observation_species_empty">Выберите вид</string>
+    <string name="observation_no_species_hint">В справочнике нет видов — добавьте их на вкладке «Справочник».</string>
+    <string name="observation_date_label">Дата</string>
+    <string name="observation_pick_date">Выбрать дату</string>
+    <string name="observation_place_label">Место</string>
+    <string name="observation_note_label">Заметка</string>
+    <string name="observation_photo_label">Фотография</string>
+    <string name="observation_photo_description">Фотография наблюдения</string>
+    <string name="observation_take_photo">Сделать фото</string>
+    <string name="observation_pick_photo">Выбрать из галереи</string>
+    <string name="observation_remove_photo">Удалить фото</string>
+    <string name="observation_no_camera">На устройстве нет приложения камеры</string>
+    <string name="observation_delete_description">Удалить наблюдение</string>
+
+    <string name="species_new_title">Новый вид</string>
+    <string name="species_edit_title">Вид птицы</string>
+    <string name="species_name_label">Название</string>
+    <string name="species_name_placeholder">Например, большая синица</string>
+    <string name="species_latin_label">Латинское название</string>
+    <string name="species_latin_placeholder">Parus major</string>
+    <string name="species_delete_description">Удалить вид</string>
+
+    <string name="search_title">Птицы онлайн</string>
+    <string name="search_placeholder">Например, синица</string>
+    <string name="search_button">Найти</string>
+    <string name="search_idle_title">Поиск в базе iNaturalist</string>
+    <string name="search_idle_description">Введите название птицы — данные загрузятся из открытого API.</string>
+    <string name="search_error_title">Ошибка загрузки</string>
+    <string name="search_empty_title">Ничего не найдено</string>
+    <string name="search_empty_description">Попробуйте другое название или проверьте написание.</string>
+    <string name="search_observations_count">Наблюдений в базе: %1$d</string>
+    <string name="search_error_network">Нет соединения с интернетом. Проверьте сеть и повторите попытку.</string>
+    <string name="search_error_server">Сервер вернул ошибку %1$d. Попробуйте позже.</string>
+    <string name="search_error_unknown">Не удалось загрузить данные: %1$s</string>
+    <string name="search_error_unknown_reason">неизвестная ошибка</string>
+
+    <string name="notification_channel_name">Напоминания о наблюдениях</string>
+    <string name="notification_channel_description">Ежедневное напоминание записать встреченных птиц</string>
+    <string name="notification_title">Орнитологический дневник</string>
+    <string name="notification_text">Не забудьте записать сегодняшние наблюдения за птицами</string>
+
+    <string-array name="default_species_names">
+        <item>Большая синица</item>
+        <item>Сизый голубь</item>
+        <item>Обыкновенный скворец</item>
+        <item>Серая ворона</item>
+    </string-array>
+
+    <string-array name="default_species_latin_names">
+        <item>Parus major</item>
+        <item>Columba livia</item>
+        <item>Sturnus vulgaris</item>
+        <item>Corvus cornix</item>
+    </string-array>
 </resources>

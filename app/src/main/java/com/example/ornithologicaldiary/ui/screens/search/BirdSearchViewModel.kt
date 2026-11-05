@@ -1,7 +1,9 @@
 package com.example.ornithologicaldiary.ui.screens.search
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.remote.dto.TaxonDto
 import com.example.ornithologicaldiary.data.repository.BirdApiRepository
 import kotlinx.coroutines.CancellationException
@@ -19,7 +21,7 @@ sealed interface BirdSearchState {
     data class Error(val message: String) : BirdSearchState
 }
 
-class BirdSearchViewModel : ViewModel() {
+class BirdSearchViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = BirdApiRepository()
 
@@ -41,15 +43,22 @@ class BirdSearchViewModel : ViewModel() {
                 throw exception
             } catch (exception: IOException) {
                 _state.value = BirdSearchState.Error(
-                    "Нет соединения с интернетом. Проверьте сеть и повторите попытку."
+                    getApplication<Application>().getString(R.string.search_error_network)
                 )
             } catch (exception: HttpException) {
                 _state.value = BirdSearchState.Error(
-                    "Сервер вернул ошибку ${exception.code()}. Попробуйте позже."
+                    getApplication<Application>().getString(
+                        R.string.search_error_server,
+                        exception.code()
+                    )
                 )
             } catch (exception: Exception) {
                 _state.value = BirdSearchState.Error(
-                    "Не удалось загрузить данные: ${exception.message ?: "неизвестная ошибка"}"
+                    getApplication<Application>().getString(
+                        R.string.search_error_unknown,
+                        exception.message
+                            ?: getApplication<Application>().getString(R.string.search_error_unknown_reason)
+                    )
                 )
             }
         }

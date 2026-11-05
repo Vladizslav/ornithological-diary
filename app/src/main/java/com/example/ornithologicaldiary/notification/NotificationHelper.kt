@@ -18,18 +18,16 @@ object NotificationHelper {
 
     const val CHANNEL_ID = "observation_reminder"
 
-    private const val CHANNEL_NAME = "Напоминания о наблюдениях"
-    private const val CHANNEL_DESCRIPTION = "Ежедневное напоминание записать встреченных птиц"
     private const val NOTIFICATION_ID = 1001
 
     fun createChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                CHANNEL_NAME,
+                context.getString(R.string.notification_channel_name),
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = CHANNEL_DESCRIPTION
+                description = context.getString(R.string.notification_channel_description)
             }
             context.getSystemService(NotificationManager::class.java)
                 ?.createNotificationChannel(channel)
@@ -53,8 +51,8 @@ object NotificationHelper {
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Орнитологический дневник")
-            .setContentText("Не забудьте записать сегодняшние наблюдения за птицами")
+            .setContentTitle(context.getString(R.string.notification_title))
+            .setContentText(context.getString(R.string.notification_text))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

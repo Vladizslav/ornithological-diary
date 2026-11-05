@@ -32,9 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.local.entity.SpeciesEntity
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.ui.components.ConfirmDeleteDialog
@@ -60,12 +62,12 @@ fun GuideScreen(
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             AppTopBar(
-                title = "Справочник",
+                title = stringResource(R.string.guide_title),
                 actions = {
                     IconButton(onClick = onOpenOnlineSearch) {
                         Icon(
                             imageVector = Icons.Filled.Public,
-                            contentDescription = "Поиск птиц в интернете"
+                            contentDescription = stringResource(R.string.guide_online_description)
                         )
                     }
                 }
@@ -76,7 +78,7 @@ fun GuideScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text(text = "Поиск по названию") },
+                placeholder = { Text(text = stringResource(R.string.guide_search_placeholder)) },
                 leadingIcon = {
                     Icon(imageVector = Icons.Filled.Search, contentDescription = null)
                 },
@@ -86,8 +88,8 @@ fun GuideScreen(
             if (found.isEmpty()) {
                 EmptyState(
                     icon = Icons.Filled.MenuBook,
-                    title = "Список пуст",
-                    description = "Добавьте первый вид птицы кнопкой «Вид»."
+                    title = stringResource(R.string.guide_empty_title),
+                    description = stringResource(R.string.guide_empty_description)
                 )
             } else {
                 LazyColumn(
@@ -112,14 +114,14 @@ fun GuideScreen(
                 .align(Alignment.BottomEnd)
                 .padding(20.dp),
             icon = { Icon(imageVector = Icons.Filled.Add, contentDescription = null) },
-            text = { Text(text = "Вид") }
+            text = { Text(text = stringResource(R.string.guide_add_species)) }
         )
     }
 
     speciesToDelete?.let { item ->
         ConfirmDeleteDialog(
-            title = "Удалить вид?",
-            message = "«${item.name}» и все наблюдения этого вида будут удалены.",
+            title = stringResource(R.string.guide_delete_title),
+            message = stringResource(R.string.guide_delete_message, item.name),
             onConfirm = {
                 viewModel.delete(item)
                 speciesToDelete = null
@@ -163,7 +165,7 @@ private fun SpeciesCard(
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.guide_delete_description),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

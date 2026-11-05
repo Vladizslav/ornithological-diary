@@ -13,15 +13,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.ui.components.FlyingBird
 
 @Composable
 fun MapScreen(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize()) {
-        AppTopBar(title = "Карта")
+        AppTopBar(title = stringResource(R.string.map_title))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -35,13 +37,12 @@ fun MapScreen(modifier: Modifier = Modifier) {
                 FlyingBird(modifier = Modifier.size(200.dp))
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Карта наблюдений",
+                    text = stringResource(R.string.map_empty_title),
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Здесь будут отмечены места встреч с птицами. " +
-                        "Экран пока пустой — карта появится на следующем этапе.",
+                    text = stringResource(R.string.map_empty_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center

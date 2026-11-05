@@ -33,9 +33,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ornithologicaldiary.R
 import com.example.ornithologicaldiary.data.remote.dto.TaxonDto
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.ui.components.EmptyState
@@ -50,7 +52,7 @@ fun BirdSearchScreen(
     var query by rememberSaveable { mutableStateOf("") }
 
     Column(modifier = modifier.fillMaxSize()) {
-        AppTopBar(title = "Птицы онлайн", onBack = onBack)
+        AppTopBar(title = stringResource(R.string.search_title), onBack = onBack)
 
         Row(
             modifier = Modifier
@@ -62,7 +64,7 @@ fun BirdSearchScreen(
                 value = query,
                 onValueChange = { query = it },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text(text = "Например, синица") },
+                placeholder = { Text(text = stringResource(R.string.search_placeholder)) },
                 leadingIcon = {
                     Icon(imageVector = Icons.Filled.Search, contentDescription = null)
                 },
@@ -73,15 +75,15 @@ fun BirdSearchScreen(
                 onClick = { viewModel.search(query) },
                 enabled = query.isNotBlank() && state != BirdSearchState.Loading
             ) {
-                Text(text = "Найти")
+                Text(text = stringResource(R.string.search_button))
             }
         }
 
         when (val current = state) {
             BirdSearchState.Idle -> EmptyState(
                 icon = Icons.Filled.Public,
-                title = "Поиск в базе iNaturalist",
-                description = "Введите название птицы — данные загрузятся из открытого API."
+                title = stringResource(R.string.search_idle_title),
+                description = stringResource(R.string.search_idle_description)
             )
 
             BirdSearchState.Loading -> Box(
@@ -103,12 +105,12 @@ fun BirdSearchScreen(
             ) {
                 EmptyState(
                     icon = Icons.Filled.CloudOff,
-                    title = "Ошибка загрузки",
+                    title = stringResource(R.string.search_error_title),
                     description = current.message
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(onClick = viewModel::retry) {
-                    Text(text = "Повторить")
+                    Text(text = stringResource(R.string.common_retry))
                 }
             }
 
@@ -116,8 +118,8 @@ fun BirdSearchScreen(
                 if (current.birds.isEmpty()) {
                     EmptyState(
                         icon = Icons.Filled.SearchOff,
-                        title = "Ничего не найдено",
-                        description = "Попробуйте другое название или проверьте написание."
+                        title = stringResource(R.string.search_empty_title),
+                        description = stringResource(R.string.search_empty_description)
                     )
                 } else {
                     LazyColumn(
@@ -154,7 +156,7 @@ private fun BirdCard(bird: TaxonDto) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                text = "Наблюдений в базе: ${bird.observationsCount}",
+                text = stringResource(R.string.search_observations_count, bird.observationsCount),
                 modifier = Modifier.padding(top = 8.dp),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary
