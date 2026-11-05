@@ -25,6 +25,9 @@ interface ObservationDao {
     @Query("SELECT * FROM observations WHERE id = :id")
     suspend fun findById(id: Long): ObservationEntity?
 
+    @Query("SELECT * FROM observations WHERE speciesId = :speciesId")
+    suspend fun getBySpeciesId(speciesId: Long): List<ObservationEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(observation: ObservationEntity): Long
 

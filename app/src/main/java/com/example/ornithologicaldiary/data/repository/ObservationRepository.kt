@@ -13,6 +13,9 @@ class ObservationRepository(database: AppDatabase) {
 
     suspend fun findById(id: Long): ObservationEntity? = dao.findById(id)
 
+    suspend fun getBySpeciesId(speciesId: Long): List<ObservationEntity> =
+        dao.getBySpeciesId(speciesId)
+
     suspend fun save(observation: ObservationEntity): Long =
         if (observation.id == 0L) dao.insert(observation) else {
             dao.update(observation)

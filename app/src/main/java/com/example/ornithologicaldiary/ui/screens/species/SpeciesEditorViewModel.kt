@@ -6,8 +6,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.ornithologicaldiary.data.local.AppDatabase
 import com.example.ornithologicaldiary.data.local.entity.SpeciesEntity
+import com.example.ornithologicaldiary.data.repository.ObservationRepository
 import com.example.ornithologicaldiary.data.repository.SpeciesRepository
 import com.example.ornithologicaldiary.navigation.Routes
+import com.example.ornithologicaldiary.util.PhotoStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +32,9 @@ class SpeciesEditorViewModel(
     savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
-    private val repository = SpeciesRepository(AppDatabase.getInstance(application))
+    private val database = AppDatabase.getInstance(application)
+    private val repository = SpeciesRepository(database)
+    private val observationRepository = ObservationRepository(database)
 
     private val speciesId: Long = savedStateHandle[Routes.ARG_ID] ?: Routes.NEW_ID
 
@@ -79,6 +83,9 @@ class SpeciesEditorViewModel(
         val current = _state.value
         if (current.isNew) return
         viewModelScope.launch {
+            observationRepository.getBySpeciesId(current.id).forEach { observation ->
+                PhotoStorage.delete(observation.photoPath)
+            }
             repository.delete(
                 SpeciesEntity(
                     id = current.id,

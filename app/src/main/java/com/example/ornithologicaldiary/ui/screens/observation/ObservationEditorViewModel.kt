@@ -90,6 +90,10 @@ class ObservationEditorViewModel(
     }
 
     fun onPhotoChange(path: String?) {
+        val previous = _state.value.photoPath
+        if (previous != null && previous != path) {
+            PhotoStorage.delete(previous)
+        }
         _state.update { it.copy(photoPath = path) }
     }
 
@@ -126,8 +130,17 @@ class ObservationEditorViewModel(
         val current = _state.value
         if (current.isNew) return
         viewModelScope.launch {
+            PhotoStorage.delete(current.photoPath)
             observationRepository.deleteById(current.id)
             _state.update { it.copy(finished = true) }
         }
+    }
+
+    override fun onCleared() {
+        val current = _state.value
+        if (current.isNew && !current.finished) {
+            PhotoStorage.delete(current.photoPath)
+        }
+        super.onCleared()
     }
 }
