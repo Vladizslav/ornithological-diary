@@ -3,7 +3,8 @@ package com.example.ornithologicaldiary.data.preferences
 data class UserSettings(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val sortOrder: SortOrder = SortOrder.DATE_DESC,
-    val showNotes: Boolean = true
+    val showNotes: Boolean = true,
+    val dailyReminder: Boolean = false
 )
 
 enum class ThemeMode(val label: String) {

@@ -30,6 +30,8 @@ object Routes {
 
     const val SPECIES_EDITOR = "species_editor"
 
+    const val BIRD_SEARCH = "bird_search"
+
     const val OBSERVATION_EDITOR_ROUTE = "$OBSERVATION_EDITOR?$ARG_ID={$ARG_ID}"
 
     const val SPECIES_EDITOR_ROUTE = "$SPECIES_EDITOR?$ARG_ID={$ARG_ID}"

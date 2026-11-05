@@ -11,6 +11,7 @@ import com.example.ornithologicaldiary.ui.screens.diary.DiaryScreen
 import com.example.ornithologicaldiary.ui.screens.guide.GuideScreen
 import com.example.ornithologicaldiary.ui.screens.map.MapScreen
 import com.example.ornithologicaldiary.ui.screens.observation.ObservationEditorScreen
+import com.example.ornithologicaldiary.ui.screens.search.BirdSearchScreen
 import com.example.ornithologicaldiary.ui.screens.settings.SettingsScreen
 import com.example.ornithologicaldiary.ui.screens.species.SpeciesEditorScreen
 import com.example.ornithologicaldiary.ui.screens.stats.StatsScreen
@@ -45,8 +46,14 @@ fun AppNavHost(
                 },
                 onEditSpecies = { id ->
                     navController.navigate(Routes.speciesEditor(id))
+                },
+                onOpenOnlineSearch = {
+                    navController.navigate(Routes.BIRD_SEARCH)
                 }
             )
+        }
+        composable(Routes.BIRD_SEARCH) {
+            BirdSearchScreen(onBack = { navController.popBackStack() })
         }
         composable(TopLevelDestination.STATS.route) {
             StatsScreen()

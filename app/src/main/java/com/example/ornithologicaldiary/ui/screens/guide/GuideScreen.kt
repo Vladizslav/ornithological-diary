@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -43,6 +44,7 @@ import com.example.ornithologicaldiary.ui.components.EmptyState
 fun GuideScreen(
     onAddSpecies: () -> Unit,
     onEditSpecies: (Long) -> Unit,
+    onOpenOnlineSearch: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GuideViewModel = viewModel()
 ) {
@@ -57,7 +59,17 @@ fun GuideScreen(
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            AppTopBar(title = "Справочник")
+            AppTopBar(
+                title = "Справочник",
+                actions = {
+                    IconButton(onClick = onOpenOnlineSearch) {
+                        Icon(
+                            imageVector = Icons.Filled.Public,
+                            contentDescription = "Поиск птиц в интернете"
+                        )
+                    }
+                }
+            )
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },

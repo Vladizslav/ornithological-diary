@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -84,6 +85,34 @@ fun SettingsScreen(
                     checked = settings.showNotes,
                     onCheckedChange = viewModel::setShowNotes
                 )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+            SectionTitle(text = "Уведомления")
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Ежедневное напоминание",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "Каждый день в 19:00",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = settings.dailyReminder,
+                    onCheckedChange = viewModel::setDailyReminder
+                )
+            }
+            TextButton(onClick = viewModel::showNotificationNow) {
+                Text(text = "Показать уведомление сейчас")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
