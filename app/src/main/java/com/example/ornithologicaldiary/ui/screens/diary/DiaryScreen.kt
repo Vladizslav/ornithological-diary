@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -31,14 +34,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.ornithologicaldiary.data.local.ObservationWithSpecies
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.ui.components.ConfirmDeleteDialog
 import com.example.ornithologicaldiary.ui.components.EmptyState
 import com.example.ornithologicaldiary.util.DateFormat
+import java.io.File
 
 @Composable
 fun DiaryScreen(
@@ -70,6 +77,7 @@ fun DiaryScreen(
                         ObservationCard(
                             item = item,
                             showNote = settings.showNotes,
+                            modifier = Modifier.animateItem(),
                             onClick = { onEditObservation(item.observation.id) },
                             onDelete = { observationToDelete = item }
                         )
@@ -105,11 +113,12 @@ fun DiaryScreen(
 private fun ObservationCard(
     item: ObservationWithSpecies,
     showNote: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onDelete: () -> Unit
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
@@ -122,6 +131,18 @@ private fun ObservationCard(
                 .padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
+            val photoPath = item.observation.photoPath
+            if (photoPath != null) {
+                AsyncImage(
+                    model = File(photoPath),
+                    contentDescription = "Фотография наблюдения",
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = item.speciesName,

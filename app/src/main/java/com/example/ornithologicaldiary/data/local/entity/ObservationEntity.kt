@@ -22,5 +22,6 @@ data class ObservationEntity(
     val speciesId: Long,
     val place: String,
     val observedAt: Long,
-    val note: String
+    val note: String,
+    val photoPath: String? = null
 )

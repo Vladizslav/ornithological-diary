@@ -1,6 +1,7 @@
 package com.example.ornithologicaldiary.ui.screens.observation
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -10,11 +11,14 @@ import com.example.ornithologicaldiary.data.local.entity.SpeciesEntity
 import com.example.ornithologicaldiary.data.repository.ObservationRepository
 import com.example.ornithologicaldiary.data.repository.SpeciesRepository
 import com.example.ornithologicaldiary.navigation.Routes
+import com.example.ornithologicaldiary.util.PhotoStorage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class ObservationEditorState(
     val id: Long = Routes.NEW_ID,
@@ -22,6 +26,7 @@ data class ObservationEditorState(
     val place: String = "",
     val observedAt: Long = System.currentTimeMillis(),
     val note: String = "",
+    val photoPath: String? = null,
     val speciesOptions: List<SpeciesEntity> = emptyList(),
     val isNew: Boolean = true,
     val loaded: Boolean = false,
@@ -59,6 +64,7 @@ class ObservationEditorViewModel(
                     place = existing?.place.orEmpty(),
                     observedAt = existing?.observedAt ?: System.currentTimeMillis(),
                     note = existing?.note.orEmpty(),
+                    photoPath = existing?.photoPath,
                     speciesOptions = species,
                     isNew = existing == null,
                     loaded = true
@@ -83,6 +89,21 @@ class ObservationEditorViewModel(
         _state.update { it.copy(observedAt = millis) }
     }
 
+    fun onPhotoChange(path: String?) {
+        _state.update { it.copy(photoPath = path) }
+    }
+
+    fun onPhotoPicked(uri: Uri) {
+        viewModelScope.launch {
+            val stored = withContext(Dispatchers.IO) {
+                PhotoStorage.copyToStorage(getApplication(), uri)
+            }
+            if (stored != null) {
+                _state.update { it.copy(photoPath = stored) }
+            }
+        }
+    }
+
     fun save() {
         val current = _state.value
         if (!current.canSave) return
@@ -93,7 +114,8 @@ class ObservationEditorViewModel(
                     speciesId = current.speciesId,
                     place = current.place.trim(),
                     observedAt = current.observedAt,
-                    note = current.note.trim()
+                    note = current.note.trim(),
+                    photoPath = current.photoPath
                 )
             )
             _state.update { it.copy(finished = true) }
