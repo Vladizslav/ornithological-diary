@@ -2,9 +2,9 @@ package com.example.ornithologicaldiary.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,7 +17,7 @@ enum class TopLevelDestination(
 ) {
     DIARY("diary", R.string.nav_diary, Icons.Filled.Today),
     MAP("map", R.string.nav_map, Icons.Filled.Map),
-    GUIDE("guide", R.string.nav_guide, Icons.Filled.MenuBook),
+    GUIDE("guide", R.string.nav_guide, Icons.AutoMirrored.Filled.MenuBook),
     STATS("stats", R.string.nav_stats, Icons.Filled.BarChart),
     SETTINGS("settings", R.string.nav_settings, Icons.Filled.Settings)
 }

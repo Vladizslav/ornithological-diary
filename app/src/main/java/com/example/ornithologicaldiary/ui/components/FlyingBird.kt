@@ -53,8 +53,8 @@ fun FlyingBird(
 
         val path = Path().apply {
             moveTo(centerX - span, centerY)
-            quadraticBezierTo(centerX - span * 0.5f, centerY - lift, centerX, centerY)
-            quadraticBezierTo(centerX + span * 0.5f, centerY - lift, centerX + span, centerY)
+            quadraticTo(centerX - span * 0.5f, centerY - lift, centerX, centerY)
+            quadraticTo(centerX + span * 0.5f, centerY - lift, centerX + span, centerY)
         }
 
         drawPath(
