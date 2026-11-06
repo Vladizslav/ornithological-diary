@@ -57,14 +57,19 @@
     <string name="settings_show_notes_description">Заметка отображается в карточке наблюдения</string>
     <string name="settings_section_notifications">Уведомления</string>
     <string name="settings_daily_reminder_title">Ежедневное напоминание</string>
-    <string name="settings_daily_reminder_description">Каждый день в 19:00</string>
+    <string name="settings_daily_reminder_description">Каждый день в %1$s</string>
+    <string name="settings_change_time">Изменить время</string>
+    <string name="settings_reminder_time_title">Время напоминания</string>
     <string name="settings_show_notification">Показать уведомление сейчас</string>
     <string name="settings_hint">Настройки сохраняются на устройстве и остаются после перезапуска приложения.</string>
 
     <string name="observation_new_title">Новое наблюдение</string>
     <string name="observation_edit_title">Наблюдение</string>
+    <string name="observation_view_title">Наблюдение</string>
+    <string name="observation_edit_action">Редактировать</string>
     <string name="observation_species_label">Вид птицы</string>
     <string name="observation_species_empty">Выберите вид</string>
+    <string name="observation_species_placeholder">Введите или выберите название</string>
     <string name="observation_no_species_hint">В справочнике нет видов — добавьте их на вкладке «Справочник».</string>
     <string name="observation_date_label">Дата</string>
     <string name="observation_pick_date">Выбрать дату</string>

@@ -16,21 +16,23 @@ import com.example.ornithologicaldiary.R
 
 object NotificationHelper {
 
-    const val CHANNEL_ID = "observation_reminder"
+    const val CHANNEL_ID = "observation_reminder_v2"
 
-    private const val NOTIFICATION_ID = 1001
+    private const val LEGACY_CHANNEL_ID = "observation_reminder"
 
     fun createChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager = context.getSystemService(NotificationManager::class.java)
+            manager?.deleteNotificationChannel(LEGACY_CHANNEL_ID)
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 context.getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = context.getString(R.string.notification_channel_description)
+                enableVibration(true)
             }
-            context.getSystemService(NotificationManager::class.java)
-                ?.createNotificationChannel(channel)
+            manager?.createNotificationChannel(channel)
         }
     }
 
@@ -53,12 +55,16 @@ object NotificationHelper {
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(context.getString(R.string.notification_title))
             .setContentText(context.getString(R.string.notification_text))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
 
-        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification)
+        val manager = NotificationManagerCompat.from(context)
+        manager.cancelAll()
+        val notificationId = (System.currentTimeMillis() and 0x7FFFFFFF).toInt()
+        manager.notify(notificationId, notification)
     }
 
     fun hasPermission(context: Context): Boolean =

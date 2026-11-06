@@ -7,7 +7,9 @@ data class UserSettings(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val sortOrder: SortOrder = SortOrder.DATE_DESC,
     val showNotes: Boolean = true,
-    val dailyReminder: Boolean = false
+    val dailyReminder: Boolean = false,
+    val reminderHour: Int = 19,
+    val reminderMinute: Int = 0
 )
 
 enum class ThemeMode(@StringRes val labelRes: Int) {

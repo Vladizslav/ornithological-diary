@@ -9,14 +9,12 @@ import java.util.Calendar
 object ReminderScheduler {
 
     private const val REQUEST_CODE = 2001
-    private const val REMINDER_HOUR = 19
-    private const val REMINDER_MINUTE = 0
 
-    fun schedule(context: Context) {
+    fun schedule(context: Context, hour: Int, minute: Int) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
-            nextTriggerTime(),
+            nextTriggerTime(hour, minute),
             AlarmManager.INTERVAL_DAY,
             pendingIntent(context)
         )
@@ -41,10 +39,10 @@ object ReminderScheduler {
         )
     }
 
-    private fun nextTriggerTime(): Long {
+    private fun nextTriggerTime(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, REMINDER_HOUR)
-            set(Calendar.MINUTE, REMINDER_MINUTE)
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
             if (timeInMillis <= System.currentTimeMillis()) {

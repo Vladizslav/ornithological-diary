@@ -30,15 +30,21 @@ object Routes {
 
     const val OBSERVATION_EDITOR = "observation_editor"
 
+    const val OBSERVATION_VIEW = "observation_view"
+
     const val SPECIES_EDITOR = "species_editor"
 
     const val BIRD_SEARCH = "bird_search"
 
     const val OBSERVATION_EDITOR_ROUTE = "$OBSERVATION_EDITOR?$ARG_ID={$ARG_ID}"
 
+    const val OBSERVATION_VIEW_ROUTE = "$OBSERVATION_VIEW?$ARG_ID={$ARG_ID}"
+
     const val SPECIES_EDITOR_ROUTE = "$SPECIES_EDITOR?$ARG_ID={$ARG_ID}"
 
     fun observationEditor(id: Long = NEW_ID): String = "$OBSERVATION_EDITOR?$ARG_ID=$id"
+
+    fun observationView(id: Long): String = "$OBSERVATION_VIEW?$ARG_ID=$id"
 
     fun speciesEditor(id: Long = NEW_ID): String = "$SPECIES_EDITOR?$ARG_ID=$id"
 }

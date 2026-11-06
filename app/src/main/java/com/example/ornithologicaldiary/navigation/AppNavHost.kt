@@ -11,6 +11,7 @@ import com.example.ornithologicaldiary.ui.screens.diary.DiaryScreen
 import com.example.ornithologicaldiary.ui.screens.guide.GuideScreen
 import com.example.ornithologicaldiary.ui.screens.map.MapScreen
 import com.example.ornithologicaldiary.ui.screens.observation.ObservationEditorScreen
+import com.example.ornithologicaldiary.ui.screens.observation.ObservationViewScreen
 import com.example.ornithologicaldiary.ui.screens.search.BirdSearchScreen
 import com.example.ornithologicaldiary.ui.screens.settings.SettingsScreen
 import com.example.ornithologicaldiary.ui.screens.species.SpeciesEditorScreen
@@ -31,8 +32,8 @@ fun AppNavHost(
                 onAddObservation = {
                     navController.navigate(Routes.observationEditor())
                 },
-                onEditObservation = { id ->
-                    navController.navigate(Routes.observationEditor(id))
+                onOpenObservation = { id ->
+                    navController.navigate(Routes.observationView(id))
                 }
             )
         }
@@ -71,6 +72,20 @@ fun AppNavHost(
             )
         ) {
             ObservationEditorScreen(onBack = { navController.popBackStack() })
+        }
+        composable(
+            route = Routes.OBSERVATION_VIEW_ROUTE,
+            arguments = listOf(
+                navArgument(Routes.ARG_ID) {
+                    type = NavType.LongType
+                    defaultValue = Routes.NEW_ID
+                }
+            )
+        ) {
+            ObservationViewScreen(
+                onBack = { navController.popBackStack() },
+                onEdit = { id -> navController.navigate(Routes.observationEditor(id)) }
+            )
         }
         composable(
             route = Routes.SPECIES_EDITOR_ROUTE,

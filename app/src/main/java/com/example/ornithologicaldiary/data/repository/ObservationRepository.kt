@@ -11,6 +11,8 @@ class ObservationRepository(database: AppDatabase) {
 
     fun observeAll(): Flow<List<ObservationWithSpecies>> = dao.observeAll()
 
+    fun observeById(id: Long): Flow<ObservationWithSpecies?> = dao.observeById(id)
+
     suspend fun findById(id: Long): ObservationEntity? = dao.findById(id)
 
     suspend fun getBySpeciesId(speciesId: Long): List<ObservationEntity> =

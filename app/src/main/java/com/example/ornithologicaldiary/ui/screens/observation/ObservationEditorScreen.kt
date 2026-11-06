@@ -17,20 +17,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -53,7 +52,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.ornithologicaldiary.R
-import com.example.ornithologicaldiary.data.local.entity.SpeciesEntity
 import com.example.ornithologicaldiary.ui.components.AppTopBar
 import com.example.ornithologicaldiary.util.DateFormat
 import com.example.ornithologicaldiary.util.PhotoStorage
@@ -121,18 +119,25 @@ fun ObservationEditorScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            SpeciesSelector(
-                options = state.speciesOptions,
-                selectedId = state.speciesId,
-                onSelect = viewModel::onSpeciesSelected
+            OutlinedTextField(
+                value = state.speciesName,
+                onValueChange = viewModel::onSpeciesNameChange,
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = stringResource(R.string.observation_species_label)) },
+                placeholder = { Text(text = stringResource(R.string.observation_species_placeholder)) },
+                singleLine = true
             )
 
-            if (state.speciesOptions.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.observation_no_species_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
-                )
+            if (state.speciesOptions.isNotEmpty()) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(state.speciesOptions, key = { it.id }) { species ->
+                        FilterChip(
+                            selected = species.name == state.speciesName,
+                            onClick = { viewModel.onSpeciesPicked(species.name) },
+                            label = { Text(text = species.name) }
+                        )
+                    }
+                }
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -249,51 +254,6 @@ fun ObservationEditorScreen(
             }
         ) {
             DatePicker(state = pickerState)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SpeciesSelector(
-    options: List<SpeciesEntity>,
-    selectedId: Long,
-    onSelect: (Long) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    val selectedName = options.firstOrNull { it.id == selectedId }?.name
-        ?: stringResource(R.string.observation_species_empty)
-
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
-    ) {
-        OutlinedTextField(
-            value = selectedName,
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-            label = { Text(text = stringResource(R.string.observation_species_label)) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
-            readOnly = true,
-            singleLine = true
-        )
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { species ->
-                DropdownMenuItem(
-                    text = { Text(text = species.name) },
-                    onClick = {
-                        onSelect(species.id)
-                        expanded = false
-                    }
-                )
-            }
         }
     }
 }

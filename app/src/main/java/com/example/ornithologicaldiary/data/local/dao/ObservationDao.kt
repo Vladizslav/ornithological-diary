@@ -22,6 +22,16 @@ interface ObservationDao {
     )
     fun observeAll(): Flow<List<ObservationWithSpecies>>
 
+    @Query(
+        """
+        SELECT o.*, s.name AS speciesName
+        FROM observations o
+        INNER JOIN species s ON s.id = o.speciesId
+        WHERE o.id = :id
+        """
+    )
+    fun observeById(id: Long): Flow<ObservationWithSpecies?>
+
     @Query("SELECT * FROM observations WHERE id = :id")
     suspend fun findById(id: Long): ObservationEntity?
 

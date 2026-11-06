@@ -16,8 +16,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     val settings: StateFlow<UserSettings> = repository.settings
 
     init {
-        if (repository.settings.value.dailyReminder) {
-            ReminderScheduler.schedule(application)
+        val current = repository.settings.value
+        if (current.dailyReminder) {
+            ReminderScheduler.schedule(application, current.reminderHour, current.reminderMinute)
         }
     }
 
@@ -29,11 +30,20 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun setDailyReminder(enabled: Boolean) {
         repository.setDailyReminder(enabled)
+        val current = repository.settings.value
         val context = getApplication<Application>()
         if (enabled) {
-            ReminderScheduler.schedule(context)
+            ReminderScheduler.schedule(context, current.reminderHour, current.reminderMinute)
         } else {
             ReminderScheduler.cancel(context)
+        }
+    }
+
+    fun setReminderTime(hour: Int, minute: Int) {
+        repository.setReminderTime(hour, minute)
+        val current = repository.settings.value
+        if (current.dailyReminder) {
+            ReminderScheduler.schedule(getApplication(), hour, minute)
         }
     }
 

@@ -38,6 +38,13 @@ class SettingsRepository private constructor(context: Context) {
         preferences.edit().putBoolean(KEY_DAILY_REMINDER, value).apply()
     }
 
+    fun setReminderTime(hour: Int, minute: Int) {
+        preferences.edit()
+            .putInt(KEY_REMINDER_HOUR, hour)
+            .putInt(KEY_REMINDER_MINUTE, minute)
+            .apply()
+    }
+
     private fun read(): UserSettings = UserSettings(
         themeMode = ThemeMode.entries
             .firstOrNull { it.name == preferences.getString(KEY_THEME_MODE, null) }
@@ -46,7 +53,9 @@ class SettingsRepository private constructor(context: Context) {
             .firstOrNull { it.name == preferences.getString(KEY_SORT_ORDER, null) }
             ?: SortOrder.DATE_DESC,
         showNotes = preferences.getBoolean(KEY_SHOW_NOTES, true),
-        dailyReminder = preferences.getBoolean(KEY_DAILY_REMINDER, false)
+        dailyReminder = preferences.getBoolean(KEY_DAILY_REMINDER, false),
+        reminderHour = preferences.getInt(KEY_REMINDER_HOUR, 19),
+        reminderMinute = preferences.getInt(KEY_REMINDER_MINUTE, 0)
     )
 
     companion object {
@@ -55,6 +64,8 @@ class SettingsRepository private constructor(context: Context) {
         private const val KEY_SORT_ORDER = "sort_order"
         private const val KEY_SHOW_NOTES = "show_notes"
         private const val KEY_DAILY_REMINDER = "daily_reminder"
+        private const val KEY_REMINDER_HOUR = "reminder_hour"
+        private const val KEY_REMINDER_MINUTE = "reminder_minute"
 
         @Volatile
         private var instance: SettingsRepository? = null

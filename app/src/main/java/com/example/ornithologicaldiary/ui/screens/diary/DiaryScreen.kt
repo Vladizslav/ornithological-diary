@@ -52,7 +52,7 @@ import java.io.File
 @Composable
 fun DiaryScreen(
     onAddObservation: () -> Unit,
-    onEditObservation: (Long) -> Unit,
+    onOpenObservation: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DiaryViewModel = viewModel()
 ) {
@@ -80,7 +80,7 @@ fun DiaryScreen(
                             item = item,
                             showNote = settings.showNotes,
                             modifier = Modifier.animateItem(),
-                            onClick = { onEditObservation(item.observation.id) },
+                            onClick = { onOpenObservation(item.observation.id) },
                             onDelete = { observationToDelete = item }
                         )
                     }

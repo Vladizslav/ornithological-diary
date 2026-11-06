@@ -21,6 +21,9 @@ interface SpeciesDao {
     @Query("SELECT * FROM species WHERE id = :id")
     suspend fun findById(id: Long): SpeciesEntity?
 
+    @Query("SELECT * FROM species WHERE name = :name COLLATE NOCASE LIMIT 1")
+    suspend fun findByName(name: String): SpeciesEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(species: SpeciesEntity): Long
 

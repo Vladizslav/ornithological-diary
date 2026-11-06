@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 
 data class ObservationEditorState(
     val id: Long = Routes.NEW_ID,
-    val speciesId: Long = Routes.NEW_ID,
+    val speciesName: String = "",
     val place: String = "",
     val observedAt: Long = System.currentTimeMillis(),
     val note: String = "",
@@ -32,7 +32,7 @@ data class ObservationEditorState(
     val loaded: Boolean = false,
     val finished: Boolean = false
 ) {
-    val canSave: Boolean get() = speciesId > 0 && place.isNotBlank()
+    val canSave: Boolean get() = speciesName.isNotBlank() && place.isNotBlank()
 }
 
 class ObservationEditorViewModel(
@@ -57,10 +57,13 @@ class ObservationEditorViewModel(
             } else {
                 observationRepository.findById(observationId)
             }
+            val existingName = existing?.speciesId
+                ?.let { speciesRepository.findById(it)?.name }
+                .orEmpty()
             _state.update {
                 it.copy(
                     id = existing?.id ?: Routes.NEW_ID,
-                    speciesId = existing?.speciesId ?: species.firstOrNull()?.id ?: Routes.NEW_ID,
+                    speciesName = existingName,
                     place = existing?.place.orEmpty(),
                     observedAt = existing?.observedAt ?: System.currentTimeMillis(),
                     note = existing?.note.orEmpty(),
@@ -73,8 +76,12 @@ class ObservationEditorViewModel(
         }
     }
 
-    fun onSpeciesSelected(id: Long) {
-        _state.update { it.copy(speciesId = id) }
+    fun onSpeciesNameChange(value: String) {
+        _state.update { it.copy(speciesName = value) }
+    }
+
+    fun onSpeciesPicked(name: String) {
+        _state.update { it.copy(speciesName = name) }
     }
 
     fun onPlaceChange(value: String) {
@@ -112,10 +119,11 @@ class ObservationEditorViewModel(
         val current = _state.value
         if (!current.canSave) return
         viewModelScope.launch {
+            val species = speciesRepository.getOrCreate(current.speciesName.trim())
             observationRepository.save(
                 ObservationEntity(
                     id = if (current.isNew) 0L else current.id,
-                    speciesId = current.speciesId,
+                    speciesId = species.id,
                     place = current.place.trim(),
                     observedAt = current.observedAt,
                     note = current.note.trim(),
