@@ -72,3 +72,7 @@
 Учебный проект по дисциплине «Разработка мобильных приложений», ОГУ им. И. С. Тургенева.
 
 - GitHub: [@Vladizslav](https://github.com/Vladizslav)
+
+
+<img width="1024" height="1024" alt="9e7d61a4d97611f1926f0613a8b8f09b_1" src="https://github.com/user-attachments/assets/c017080f-52d0-4ef5-8965-603b19575e7f" />
+
